@@ -1,0 +1,21 @@
+# Bilet Satın Alma Platformu
+
+Vanilla PHP, SQLite, ve Docker ile otobüs bileti satış platformu.
+
+## Kurulum
+
+1. Proje dizininde `db.sql` dosyasını kullanarak `db.sqlite` veritabanı dosyasını oluşturun.
+2. Docker ile çalıştırmak için:
+   ```
+   docker build -t bilet-satin-alma .
+   docker run -p 8080:80 bilet-satin-alma
+   ```
+3. Uygulamayı `localhost:8080` üzerinden kullanın.
+
+## Özellikler
+
+- Kullanıcı, firma admin ve admin rolleri
+- Sefer arama/listeme, bilet satın alma/iptal
+- Koltuk yönetimi, kredi sistemi
+- PDF bilet çıktısı (FPDF ile)
+- Firma ve kupon yönetimi (panel sayfaları)

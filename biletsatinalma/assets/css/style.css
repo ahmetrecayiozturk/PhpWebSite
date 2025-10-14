@@ -1,0 +1,6 @@
+body { font-family: Arial, sans-serif; background: #f7f7f7; margin: 20px; }
+nav { background: #222; color: #fff; margin-bottom: 20px; padding: 10px; }
+nav a { color: #fff; margin-right: 10px; text-decoration: none; }
+table { border-collapse: collapse; width: 100%; background: #fff; }
+td, th { border: 1px solid #ccc; padding: 8px; }
+.flash { background: #ffc; padding: 10px; margin-bottom: 15px; border: 1px solid #cc9; }
