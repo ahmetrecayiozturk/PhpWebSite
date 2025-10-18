@@ -2,11 +2,16 @@
 require_once 'config.php';
 require_once 'auth.php';
 require_role('firma_admin');
+require_once 'functions.php';
 
 $user_id = $_SESSION['user_id'];
 $stmt = $db->prepare("SELECT firma_id FROM users WHERE id=?");
 $stmt->execute([$user_id]);
 $firma_id = $stmt->fetchColumn();
+
+if (!$firma_id) {
+    die("Firma bilgisi yok.");
+}
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ekle'])) {
     $stmt = $db->prepare("INSERT INTO sefers (firma_id, kalkis, varis, tarih, saat, fiyat, koltuk_sayisi) VALUES (?, ?, ?, ?, ?, ?, ?)");
@@ -19,9 +24,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ekle'])) {
         $_POST['fiyat'],
         $_POST['koltuk_sayisi']
     ]);
+    header('Location: firma_panel.php');
+    exit;
 }
 
-$sefers = $db->prepare("SELECT * FROM sefers WHERE firma_id=?")->execute([$firma_id]);
+$stmt = $db->prepare("SELECT * FROM sefers WHERE firma_id = ?");
+$stmt->execute([$firma_id]);
+$sefers = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 <!DOCTYPE html>
 <html>
@@ -37,6 +46,20 @@ $sefers = $db->prepare("SELECT * FROM sefers WHERE firma_id=?")->execute([$firma
         Koltuk: <input name="koltuk_sayisi" type="number" required>
         <button type="submit" name="ekle">Sefer Ekle</button>
     </form>
-    <!-- Seferleri listele/düzenle/sil butonları ekleyebilirsin -->
+
+    <h3>Mevcut Seferler</h3>
+    <table border="1">
+        <tr><th>ID</th><th>Kalkış</th><th>Varış</th><th>Tarih</th><th>Saat</th><th>Fiyat</th></tr>
+        <?php foreach ($sefers as $s): ?>
+        <tr>
+            <td><?= sanitize($s['id']) ?></td>
+            <td><?= sanitize($s['kalkis']) ?></td>
+            <td><?= sanitize($s['varis']) ?></td>
+            <td><?= sanitize($s['tarih']) ?></td>
+            <td><?= sanitize($s['saat']) ?></td>
+            <td><?= sanitize($s['fiyat']) ?>₺</td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
 </body>
 </html>

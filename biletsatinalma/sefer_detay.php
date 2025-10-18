@@ -1,5 +1,6 @@
 <?php
 require_once 'config.php';
+require_once 'auth.php';
 require_once 'functions.php';
 
 $id = $_GET['id'] ?? null;
@@ -14,6 +15,7 @@ if (!$sefer) die("Sefer bulunamadı");
 <html>
 <head><title>Sefer Detayları</title></head>
 <body>
+    <?php include 'menu.php'; ?>
     <h2><?= sanitize($sefer['firma']) ?> - Sefer Detayları</h2>
     <ul>
         <li>Kalkış: <?= sanitize($sefer['kalkis']) ?></li>
@@ -26,6 +28,7 @@ if (!$sefer) die("Sefer bulunamadı");
     <?php if (!is_logged_in()): ?>
         <a href="login.php">Bilet satın almak için Giriş Yapın</a>
     <?php else: ?>
+        <!-- Sadece yolcu rolüne izin vermek istersen get_user_role() == 'user' kontrolü ekle -->
         <a href="bilet_al.php?sefer_id=<?= $sefer['id'] ?>">Bilet Satın Al</a>
     <?php endif; ?>
 </body>
